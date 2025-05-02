@@ -161,7 +161,7 @@ func (c *ecrecoverOracle) RequiredGas(input []byte) uint64 {
 	return c.Orig.RequiredGas(input)
 }
 
-func (c *ecrecoverOracle) Run(input []byte) ([]byte, error) {
+func (c *ecrecoverOracle) Run(_ vm.PrecompileContext, input []byte) ([]byte, error) {
 	// Modification note: the L1 precompile behavior may change, but not in incompatible ways.
 	// We want to enforce the subset that represents the EVM behavior activated in L2.
 	// Below is a copy of the Cancun behavior. L1 might expand on that at a later point.
@@ -221,7 +221,7 @@ var (
 	errInvalidBn256PairingCheck = errors.New("invalid bn256Pairing check")
 )
 
-func (b *bn256PairingOracle) Run(input []byte) ([]byte, error) {
+func (b *bn256PairingOracle) Run(ctx vm.PrecompileContext, input []byte) ([]byte, error) {
 	// Handle some corner cases cheaply
 	if len(input)%192 > 0 {
 		return nil, errBadPairingInput
@@ -242,11 +242,11 @@ type bn256PairingOracleGranite struct {
 	bn256PairingOracle
 }
 
-func (b *bn256PairingOracleGranite) Run(input []byte) ([]byte, error) {
+func (b *bn256PairingOracleGranite) Run(ctx vm.PrecompileContext, input []byte) ([]byte, error) {
 	if len(input) > int(params.Bn256PairingMaxInputSizeGranite) {
 		return nil, errBadPairingInputSize
 	}
-	return b.bn256PairingOracle.Run(input)
+	return b.bn256PairingOracle.Run(ctx, input)
 }
 
 // kzgPointEvaluationOracle implements the EIP-4844 point evaluation precompile,
@@ -273,7 +273,7 @@ var (
 )
 
 // Run executes the point evaluation precompile.
-func (b *kzgPointEvaluationOracle) Run(input []byte) ([]byte, error) {
+func (b *kzgPointEvaluationOracle) Run(_ vm.PrecompileContext, input []byte) ([]byte, error) {
 	// Modification note: the L1 precompile behavior may change, but not in incompatible ways.
 	// We want to enforce the subset that represents the EVM behavior activated in L2.
 	// Below is a copy of the Cancun behavior. L1 might expand on that at a later point.
@@ -345,7 +345,7 @@ func (b *blsOperationOracle) RequiredGas(input []byte) uint64 {
 	return b.Orig.RequiredGas(input)
 }
 
-func (b *blsOperationOracle) Run(input []byte) ([]byte, error) {
+func (b *blsOperationOracle) Run(_ vm.PrecompileContext, input []byte) ([]byte, error) {
 	inputSizeValid := b.checkInputSize(input)
 	// Handle some corner cases cheaply
 	if !inputSizeValid {
@@ -369,9 +369,9 @@ type blsOperationOracleWithSizeLimit struct {
 	sizeLimit uint64
 }
 
-func (b *blsOperationOracleWithSizeLimit) Run(input []byte) ([]byte, error) {
+func (b *blsOperationOracleWithSizeLimit) Run(ctx vm.PrecompileContext, input []byte) ([]byte, error) {
 	if uint64(len(input)) > b.sizeLimit {
 		return nil, errInvalidBlsSize
 	}
-	return b.blsOperationOracle.Run(input)
+	return b.blsOperationOracle.Run(ctx, input)
 }

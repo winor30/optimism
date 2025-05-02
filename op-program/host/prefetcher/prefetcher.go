@@ -373,7 +373,7 @@ func (p *Prefetcher) prefetch(ctx context.Context, hint string) error {
 		precompile := getPrecompiledContract(precompileAddress)
 
 		// KZG Point Evaluation precompile also verifies its input
-		result, err := precompile.Run(hintBytes[20:])
+		result, err := precompile.Run(nil, hintBytes[20:])
 		if err == nil {
 			result = append(precompileSuccess[:], result...)
 		} else {
@@ -403,7 +403,7 @@ func (p *Prefetcher) prefetch(ctx context.Context, hint string) error {
 		precompile := getPrecompiledContract(precompileAddress)
 
 		// KZG Point Evaluation precompile also verifies its input
-		result, err := precompile.Run(hintBytes[28:])
+		result, err := precompile.Run(nil, hintBytes[28:])
 		if err == nil {
 			result = append(precompileSuccess[:], result...)
 		} else {

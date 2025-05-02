@@ -1,0 +1,7 @@
+optimism_package:
+  chains:
+    - participants:
+        - el_type: op-geth
+          el_image: winor30/op-geth:remotestaticcall # ★ここだけ変更★
+          cl_type: op-node
+          cl_image: { { localDockerImage "op-node" } } # CL はビルダーに任せる
