@@ -719,6 +719,7 @@ type DevL1DeployConfig struct {
 	L1GenesisBlockBaseFeePerGas *hexutil.Big    `json:"l1GenesisBlockBaseFeePerGas"`
 	L1GenesisBlockExcessBlobGas *hexutil.Uint64 `json:"l1GenesisBlockExcessBlobGas,omitempty"` // EIP-4844
 	L1GenesisBlockBlobGasUsed   *hexutil.Uint64 `json:"l1GenesisBlockblobGasUsed,omitempty"`   // EIP-4844
+	L1ArchiveNodeRPC            string          `json:"l1ArchiveNodeRPC"`
 }
 
 // SuperchainL1DeployConfig configures parameters of the superchain-wide deployed contracts to L1.
