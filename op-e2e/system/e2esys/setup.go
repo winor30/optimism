@@ -758,6 +758,8 @@ func (cfg SystemConfig) Start(t *testing.T, startOpts ...StartOption) (*System, 
 	// the `RollupSequencerHTTP` GethOption can be supplied to any sentry nodes.
 	l2Nodes := []string{RoleSeq}
 	for name := range cfg.Nodes {
+		endpoint := l1Geth.Node.HTTPEndpoint()
+		l2Genesis.Config.L1ArchiveNodeRPC = &endpoint
 		if name == RoleSeq {
 			continue
 		}
