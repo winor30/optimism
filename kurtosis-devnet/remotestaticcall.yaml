@@ -2,7 +2,7 @@ optimism_package:
   chains:
     - participants:
         - el_type: op-geth
-          el_image: winor30/op-geth:remotestaticcall
+          el_image: winor30/op-geth:remotestaticcall-l1sload
           el_log_level: ""
           el_extra_env_vars: {}
           el_extra_labels: {}
